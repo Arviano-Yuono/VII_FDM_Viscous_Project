@@ -2,12 +2,11 @@ import numpy as np
 from src.fluid import Fluid
 import scipy.integrate as spi
 
-def viscous_solver(fluid, U_e):
+def viscous_solver(fluid: Fluid, U_e: np.array) -> None:
     """
-    Solves the viscous boundary layer problem using FDM.
+    Solve the viscous boundary layer problem using FDM.
     - fluid: instance of the Fluid class
     - U_e: edge velocity from inviscid solver
-    - kwargs: additional parameters
     Updates the velocity field in the Fluid class.
     """
     for i in range(1, fluid.Nx):
@@ -20,16 +19,15 @@ def viscous_solver(fluid, U_e):
 
 def inviscid_solver(fluid: Fluid) -> np.array:
     """
-    Solves the inviscid flow problem.
+    Solve the inviscid flow problem.
     - fluid: instance of the Fluid class
-    - kwargs: additional parameters (e.g., pressure distribution)
     Returns updated edge velocity U_e(x).
     """
     U_e = np.ones_like(fluid.x) * fluid.U_inf 
     #tulis fungsi asli untuk solve inviscid di sini, returnya updated array U_e
     return U_e
 
-def convergence_checker(fluid, old_u, tolerance=1e-5):
+def convergence_checker(fluid: Fluid, old_u: np.array, tolerance: float = 1e-5 ) -> bool:
     """
     Checks convergence by comparing the current and previous velocity fields.
     - fluid: instance of the Fluid class

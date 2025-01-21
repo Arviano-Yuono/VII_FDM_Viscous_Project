@@ -4,7 +4,14 @@ class Fluid:
     """
     Represents the fluid properties, discretization grid, and velocity field.
     """
-    def __init__(self, L, H, Nx, Ny, nu, U_inf):
+    def __init__(self, 
+                 L: int, 
+                 H: int, 
+                 Nx: int, 
+                 Ny:int, 
+                 nu: float, 
+                 U_inf: np.array) -> None:
+        
         self.L = L  # plate length
         self.H = H  # domain height
         self.Nx = Nx  # N grid points in x
@@ -19,13 +26,13 @@ class Fluid:
         self.y = np.linspace(0, H, Ny)
         
         #Vel fields
-        self.u = np.zeros((Nx, Ny))  # x-direction velocity
-        self.v = np.zeros((Nx, Ny))  # y-direction velocity
+        self.u = np.zeros((Nx, Ny))  # x velocity
+        self.v = np.zeros((Nx, Ny))  # y velocity
         
         #BC
-        self.u[:, -1] = U_inf  # Free-stream velocity at top boundary
-        self.u[0, :] = 0       # No-slip condition at the wall
-        self.v[0, :] = 0       # No penetration at the wall
+        self.u[:, -1] = U_inf  # U_inv at the edge of BL
+        self.u[0, :] = 0       # No slip at wall
+        self.v[0, :] = 0       # No pen at wall
     
     # def finite_difference(self, arr, axis, order=1):
     #     """
