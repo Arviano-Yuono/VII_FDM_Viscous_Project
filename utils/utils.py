@@ -1,7 +1,9 @@
 import numpy as np
 from src.fluid import Fluid
 import scipy.integrate as spi
+from numba import njit
 
+@njit
 def viscous_solver(fluid: Fluid, U_e: np.array) -> None:
     """
     Solve the viscous boundary layer problem using FDM.
@@ -15,7 +17,7 @@ def viscous_solver(fluid: Fluid, U_e: np.array) -> None:
             u_y = (fluid.u[i, j + 1] - fluid.u[i, j - 1]) / (2 * fluid.dy)
             u_yy = (fluid.u[i, j + 1] - 2 * fluid.u[i, j] + fluid.u[i, j - 1]) / (fluid.dy ** 2)
             fluid.v[i, j] = -spi.trapezoid(u_x, fluid.y[:j + 1])  # Continuity
-            fluid.u[i + 1, j] = fluid.u[i, j] + fluid.dx * (-fluid.u[i, j] * u_x - fluid.v[i, j] * u_y + fluid.nu * u_yy)
+            fluid.u[i + 1, j] = fluid.u[i, j] + fluid.dx * (-fluid.u[i, j] * u_x - fluid.v[i, j] * u_y + fluid.nu * u_yy) # conv. of Momentum
 
 def inviscid_solver(fluid: Fluid) -> np.array:
     """
